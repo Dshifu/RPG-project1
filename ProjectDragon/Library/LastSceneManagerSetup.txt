@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/Scene/Yurii_village/Yurii_Village.unity
-  isLoaded: 1
-  isActive: 1
