@@ -2,3 +2,11 @@
 ProjectDragon/Temp/
 
 ProjectDragon/Library/
+
+ProjectDragon/Assembly-CSharp-Editor\.csproj
+
+ProjectDragon/Assembly-CSharp-firstpass\.csproj
+
+ProjectDragon/Assembly-CSharp\.csproj
+
+ProjectDragon/ProjectDragon\.sln
