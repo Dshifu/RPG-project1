@@ -29,8 +29,8 @@ Transform:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 149790}
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -32.51, y: 0.11, z: -60.27}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 166.5, y: 4.51, z: 1.16}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 4493395174124014}
@@ -449,6 +449,7 @@ GameObject:
   - component: {fileID: 4386766720758154}
   - component: {fileID: 33460297029145702}
   - component: {fileID: 23173939021003512}
+  - component: {fileID: 65967495532463338}
   m_Layer: 0
   m_Name: Axe_01
   m_TagString: Untagged
@@ -549,7 +550,7 @@ Transform:
   m_GameObject: {fileID: 1989167250918212}
   m_LocalRotation: {x: 0.70489836, y: 0.7066105, z: -0.03740536, w: -0.049201228}
   m_LocalPosition: {x: -0.189, y: 0.261, z: 0.011}
-  m_LocalScale: {x: 4.5, y: 4.5, z: 4.5}
+  m_LocalScale: {x: 5, y: 5, z: 5}
   m_Children: []
   m_Father: {fileID: 4416533348968790}
   m_RootOrder: 0
@@ -840,6 +841,18 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1342574980926208}
   m_Mesh: {fileID: 4300000, guid: 9bd5e19207ad09747862e0c2c7a09b2c, type: 3}
+--- !u!65 &65967495532463338
+BoxCollider:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1989167250918212}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.25, y: 0.07, z: 0.02}
+  m_Center: {x: 0, y: 0.0000038146973, z: 0.00000023841858}
 --- !u!114 &114270316794370866
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -876,7 +889,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enemyLayer: 9
   maxHealthPoints: 100
-  damagePerHit: 10
+  damagePerHit: 60
   minTimeBetweenHits: 0.5
   maxAttackRange: 2
 --- !u!137 &137295181375380868
