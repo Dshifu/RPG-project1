@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Assertions;
 
 public class Player : MonoBehaviour, IDamageable {
 	[SerializeField] int enemyLayer = 9;
@@ -9,6 +10,7 @@ public class Player : MonoBehaviour, IDamageable {
 	[SerializeField] float minTimeBetweenHits = 0.5f;
 	[SerializeField] float maxAttackRange = 2f;
 	[SerializeField] Weapons weaponInUse;
+
 	GameObject currentTarrget;
 	float currentHealthPoints;
 
@@ -32,9 +34,21 @@ public class Player : MonoBehaviour, IDamageable {
 	void PutWeaponInHand ()
 	{
 		var weaponPrefab = weaponInUse.GetWeaponPrefab();
-		var weapon = Instantiate(weaponPrefab);
+		GameObject dominantHand = RequestDominantHand();
+		var weapon = Instantiate(weaponPrefab, dominantHand.transform);
+		weapon.transform.localPosition = weaponInUse.gripTransform.localPosition;
+		weapon.transform.localRotation = weaponInUse.gripTransform.localRotation;
 	}
 
+
+	GameObject RequestDominantHand()
+	{
+		var dominantHands = GetComponentsInChildren<DominantHand>();
+		int numberOfDominantHands = dominantHands.Length;
+		Assert.AreNotEqual(numberOfDominantHands,0,"No dominantHand fount on player");
+		Assert.IsFalse(numberOfDominantHands > 1, "More than 1 DdominantHand scripts on player");
+		return dominantHands[0].gameObject;
+	}
 	void OnMouseClick (RaycastHit raycastHit, int layerHit)
 	{
 		if(layerHit == enemyLayer)

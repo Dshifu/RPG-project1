@@ -5,6 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(menuName=("RPG/Weapon"))]
 public class Weapons : ScriptableObject {
 
+	public Transform gripTransform;
 	[SerializeField] GameObject weaponPrefab;
 	[SerializeField] AnimationClip attackAnimation;
 
