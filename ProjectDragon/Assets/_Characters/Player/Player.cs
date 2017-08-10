@@ -12,16 +12,19 @@ namespace RPG.Characters
         [SerializeField] int enemyLayer = 9;
         [SerializeField] float maxHealthPoints = 100f;
         [SerializeField] float damagePerHit = 10f;
-        [SerializeField] float minTimeBetweenHits = 0.5f;
-        [SerializeField] float maxAttackRange = 2f;
+
         [SerializeField] Weapons weaponInUse;
         [SerializeField] AnimatorOverrideController animatorOverrideController;
-
+        Animator animator;
         float currentHealthPoints;
 
         CameraRaycaster cameraRaycaster;
         float lastHitTime = 0f;
 
+        void IDamageable.TakeDamage(float damage)
+        {
+            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+        }
         public float healthAsPercentage
         {
             get { return (currentHealthPoints / maxHealthPoints); }
@@ -32,7 +35,7 @@ namespace RPG.Characters
             RegisterForMouseClick();
             SetCurrentMaxHealth();
             PutWeaponInHand();
-            OverrideAnimatorController();
+            SetupRuntimeAnimator();
         }
 
         void RegisterForMouseClick()
@@ -44,11 +47,11 @@ namespace RPG.Characters
         {
             currentHealthPoints = maxHealthPoints;
         }
-        void OverrideAnimatorController()
+        void SetupRuntimeAnimator()
         {
-             Animator animator = GetComponent<Animator>();
-             animator.runtimeAnimatorController = animatorOverrideController;
-             animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimClip();
+            animator = GetComponent<Animator>();
+            animator.runtimeAnimatorController = animatorOverrideController;
+            animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimClip();
 
         }
         void PutWeaponInHand()
@@ -59,8 +62,6 @@ namespace RPG.Characters
             weapon.transform.localPosition = weaponInUse.gripTransform.localPosition;
             weapon.transform.localRotation = weaponInUse.gripTransform.localRotation;
         }
-
-
         GameObject RequestDominantHand()
         {
             var dominantHands = GetComponentsInChildren<DominantHand>();
@@ -74,29 +75,35 @@ namespace RPG.Characters
             if (layerHit == enemyLayer)
             {
                 GameObject enemy = raycastHit.collider.gameObject;
-
-                if ((enemy.transform.position - transform.position).magnitude > maxAttackRange)
+                if (IsTargerInRange(enemy))
                 {
-                    return;
-                }
-                Enemy enemyComponent = enemy.GetComponent<Enemy>();
-                if (Time.time - lastHitTime > minTimeBetweenHits)
-                {
-                    enemyComponent.TakeDamage(damagePerHit);
-                    lastHitTime = Time.time;
+                    AttackTarget(enemy);
                 }
             }
         }
-        void IDamageable.TakeDamage(float damage)
+        bool IsTargerInRange(GameObject target)
         {
-            currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
+            float distanceToTarget = (target.transform.position - transform.position).magnitude;
+            return distanceToTarget <= weaponInUse.GetMaxAttackRange();
         }
+        void AttackTarget(GameObject target)
+        {
+                Enemy enemyComponent = target.GetComponent<Enemy>();
+                if (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())
+                {
+                    animator.SetTrigger("Attack");
+                    enemyComponent.TakeDamage(damagePerHit);
+                    lastHitTime = Time.time;
+                }
+        }
+
+
 
         void OnDrawGizmos()
         {
             //Draw Attack Radius
             Gizmos.color = new Color(255f, 0f, 0f, 255f);
-            Gizmos.DrawWireSphere(transform.position, maxAttackRange);
+            Gizmos.DrawWireSphere(transform.position, weaponInUse.GetMaxAttackRange());
 
         }
 
