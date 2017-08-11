@@ -1326,6 +1326,10 @@ Prefab:
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 2}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 2}
   m_IsPrefabParent: 0
@@ -1895,6 +1899,10 @@ Prefab:
       propertyPath: m_StaticEditorFlags
       value: 4294967295
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 2}
+      propertyPath: m_NavMeshLayer
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 2}
   m_IsPrefabParent: 0
@@ -2108,7 +2116,7 @@ Prefab:
       objectReference: {fileID: 0}
     - target: {fileID: 408730, guid: 7737647c22c1fc64a88d5cd030c352ce, type: 2}
       propertyPath: m_RootOrder
-      value: 4
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 114739134899741420, guid: 7737647c22c1fc64a88d5cd030c352ce,
         type: 2}
@@ -2170,6 +2178,11 @@ Prefab:
         type: 2}
       propertyPath: m_TreeDistance
       value: 2000
+      objectReference: {fileID: 0}
+    - target: {fileID: 218743227883591056, guid: e87311aa60903d54fbd8ba3dbcffb88c,
+        type: 2}
+      propertyPath: m_TreeBillboardDistance
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: e87311aa60903d54fbd8ba3dbcffb88c, type: 2}
@@ -2343,6 +2356,10 @@ Prefab:
     - target: {fileID: 1574785241151032, guid: a3c69aa6f5e65664d9d83c441805e433, type: 2}
       propertyPath: m_Name
       value: House in Mount
+      objectReference: {fileID: 0}
+    - target: {fileID: 1538820428757466, guid: a3c69aa6f5e65664d9d83c441805e433, type: 2}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: a3c69aa6f5e65664d9d83c441805e433, type: 2}
@@ -3615,7 +3632,7 @@ Transform:
   m_Children:
   - {fileID: 631004735}
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1326214116
 Prefab:
@@ -4752,6 +4769,10 @@ Prefab:
     - target: {fileID: 100000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 2}
       propertyPath: m_StaticEditorFlags
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 2}
+      propertyPath: m_NavMeshLayer
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 780611a67e8e941a2b3aa96e5915a793, type: 2}
