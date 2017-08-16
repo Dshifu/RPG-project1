@@ -27,6 +27,7 @@ namespace RPG.Characters
         {
             return projectileSpeed;
         }
+        
         void OnCollisionEnter(Collision collision)
         {
             int layerCollidedWith = collision.gameObject.layer;

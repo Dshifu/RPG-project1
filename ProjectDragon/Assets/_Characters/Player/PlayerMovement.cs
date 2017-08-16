@@ -11,56 +11,41 @@ namespace RPG.Characters
     [RequireComponent(typeof(ThirdPersonCharacter))]
     public class PlayerMovement : MonoBehaviour
     {
-        [SerializeField] const int WalkableLayerNumber = 8;
-        [SerializeField] const int EnemyLayerNumber = 9;
-
-        // ThirdPersonCharacter thirdPersonCharacter = null;   // A reference to the ThirdPersonCharacter on the object
         CameraRaycaster cameraRaycaster = null;
         AICharacterControl aiCharacterControl = null;
         GameObject walkTarget = null;
 
-        Vector3 clickPoint;
-        //bool isInDirectMode = false;
-
         void Start()
         {
-            cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
-            cameraRaycaster.notifyMouseClickObservers += ProcessMouseClick;
-
-            // thirdPersonCharacter = GetComponent<ThirdPersonCharacter>();
-
+            RegisterDelegates();
 
             aiCharacterControl = GetComponent<AICharacterControl>();
+
             walkTarget = new GameObject("walkTarget");
         }
 
-        void ProcessMouseClick(RaycastHit raycastHit, int layerHit)
+        void RegisterDelegates()
         {
-            switch (layerHit)
+            cameraRaycaster = Camera.main.GetComponent<CameraRaycaster>();
+            cameraRaycaster.onMouseOverPotentionalTerrain += OnMouseOverPotentiallyWalkable;
+            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
+        }
+
+        void OnMouseOverPotentiallyWalkable(Vector3 destination)
+        {
+            if(Input.GetMouseButton(0))
             {
-                case EnemyLayerNumber:
-                    GameObject enemy = raycastHit.collider.gameObject;
-                    aiCharacterControl.SetTarget(enemy.transform);
-                    break;
-                case WalkableLayerNumber:
-                    walkTarget.transform.position = raycastHit.point;
-                    aiCharacterControl.SetTarget(walkTarget.transform);
-                    break;
-                default:
-                    Debug.LogWarning("Mouse CLick issue");
-                    return;
+                walkTarget.transform.position = destination;
+                aiCharacterControl.SetTarget(walkTarget.transform);
             }
         }
 
-        // void ProcessDirectMovement()
-        // {
-        //     float h = Input.GetAxis("Horizontal");
-        //     float v = Input.GetAxis("Vertical");
-        //     Vector3 CameraForward = Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized;
-        //     Vector3 movement = v*CameraForward + h*Camera.main.transform.right;
-        //     thirdPersonCharacter.Move(movement, false, false);
-        // }
-
-
+        void OnMouseOverEnemy(Enemy enemy)
+        {
+            if(Input.GetMouseButton(0) || Input.GetMouseButton(1))
+            {
+                aiCharacterControl.SetTarget(enemy.transform);
+            }
+        }
     }
 }

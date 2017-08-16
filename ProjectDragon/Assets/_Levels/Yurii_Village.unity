@@ -1985,6 +1985,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   layerPriorities: 090000000a00000008000000
+  walkCursor: {fileID: 2800000, guid: d0d404b7b3d68b840b8fedc8b9401eef, type: 3}
+  atackCursor: {fileID: 2800000, guid: bfc061a66696e404c8236941b3059e38, type: 3}
+  cursorHotSpot: {x: 0, y: 0}
 --- !u!81 &631004738
 AudioListener:
   m_ObjectHideFlags: 0

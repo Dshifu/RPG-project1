@@ -9,18 +9,20 @@ namespace RPG.Characters
 {
     public class Player : MonoBehaviour, IDamageable
     {
-        [SerializeField] int enemyLayer = 9;
         [SerializeField] float maxHealthPoints = 100f;
+        float currentHealthPoints;
+
         [SerializeField] float damagePerHit = 10f;
 
         [SerializeField] Weapons weaponInUse;
+
         [SerializeField] AnimatorOverrideController animatorOverrideController;
         Animator animator;
-        float currentHealthPoints;
 
-        CameraRaycaster cameraRaycaster;
         float lastHitTime = 0f;
 
+        CameraRaycaster cameraRaycaster;
+        
         void IDamageable.TakeDamage(float damage)
         {
             currentHealthPoints = Mathf.Clamp(currentHealthPoints - damage, 0f, maxHealthPoints);
@@ -34,34 +36,45 @@ namespace RPG.Characters
         {
             RegisterForMouseClick();
             SetCurrentMaxHealth();
-            PutWeaponInHand();
             SetupRuntimeAnimator();
+            PutWeaponInHand();
         }
 
         void RegisterForMouseClick()
         {
             cameraRaycaster = FindObjectOfType<CameraRaycaster>();
-            cameraRaycaster.notifyMouseClickObservers += OnMouseClick;
+            cameraRaycaster.onMouseOverEnemy += OnMouseOverEnemy;
         }
+
+        void OnMouseOverEnemy(Enemy enemy)
+        {
+            if(Input.GetMouseButton(0) && IsTargerInRange(enemy.gameObject))
+            {
+                AttackTarget(enemy);
+            }
+        }
+
         void SetCurrentMaxHealth()
         {
             currentHealthPoints = maxHealthPoints;
         }
+
         void SetupRuntimeAnimator()
         {
             animator = GetComponent<Animator>();
             animator.runtimeAnimatorController = animatorOverrideController;
-            animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimClip();
-
+            animatorOverrideController["DEFAULT ATTACK"] = weaponInUse.GetAttackAnimClip(); 
         }
+
         void PutWeaponInHand()
         {
-            var weaponPrefab = weaponInUse.GetWeaponPrefab();
+            GameObject weaponPrefab = weaponInUse.GetWeaponPrefab();
             GameObject dominantHand = RequestDominantHand();
-            var weapon = Instantiate(weaponPrefab, dominantHand.transform);
+            GameObject weapon = Instantiate(weaponPrefab, dominantHand.transform);
             weapon.transform.localPosition = weaponInUse.gripTransform.localPosition;
             weapon.transform.localRotation = weaponInUse.gripTransform.localRotation;
         }
+
         GameObject RequestDominantHand()
         {
             var dominantHands = GetComponentsInChildren<DominantHand>();
@@ -70,34 +83,22 @@ namespace RPG.Characters
             Assert.IsFalse(numberOfDominantHands > 1, "More than 1 DdominantHand scripts on player");
             return dominantHands[0].gameObject;
         }
-        void OnMouseClick(RaycastHit raycastHit, int layerHit)
-        {
-            if (layerHit == enemyLayer)
-            {
-                GameObject enemy = raycastHit.collider.gameObject;
-                if (IsTargerInRange(enemy))
-                {
-                    AttackTarget(enemy);
-                }
-            }
-        }
+        
         bool IsTargerInRange(GameObject target)
         {
             float distanceToTarget = (target.transform.position - transform.position).magnitude;
             return distanceToTarget <= weaponInUse.GetMaxAttackRange();
         }
-        void AttackTarget(GameObject target)
+
+        void AttackTarget(Enemy enemy)
         {
-                Enemy enemyComponent = target.GetComponent<Enemy>();
                 if (Time.time - lastHitTime > weaponInUse.GetMinTimeBetweenHits())
                 {
                     animator.SetTrigger("Attack");
-                    enemyComponent.TakeDamage(damagePerHit);
+                    enemy.TakeDamage(damagePerHit);
                     lastHitTime = Time.time;
                 }
         }
-
-
 
         void OnDrawGizmos()
         {
